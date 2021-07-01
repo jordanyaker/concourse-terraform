@@ -50,6 +50,7 @@ def _dump_plugin_cache(plugin_cache_dir: str) -> None:
 def _terraform(
         *args: str,
         input=None,
+        terraform_dir: str = None,
         working_dir: str = None,
         plugin_cache_dir: str = None,
         error_on_no_changes: bool = True,
@@ -59,6 +60,8 @@ def _terraform(
         TERRAFORM_BIN_FILE_PATH,
         *args
     ]
+    if terraform_dir is not None:
+        process_args.append(f'-chdir={terraform_dir}')
     # force 'TF_IN_AUTOMATION'
     os.environ['TF_IN_AUTOMATION'] = '1'
     if debug:
@@ -146,8 +149,6 @@ def init(
         backend_config_vars: Optional[dict] = None,
         debug: bool = False) -> None:
     # default terraform dir path
-    if not terraform_dir_path:
-        terraform_dir_path = '.'
     terraform_command_args = []
     # set backend config values
     if backend_config_vars:
@@ -159,7 +160,7 @@ def init(
         'init',
         '-input=false',
         *terraform_command_args,
-        terraform_dir_path,
+        terraform_dir=terraform_dir_path,
         working_dir=working_dir_path,
         plugin_cache_dir=plugin_cache_dir_path,
         debug=debug)
@@ -183,8 +184,6 @@ def plan(
         error_on_no_changes = True
     if destroy not in [True, False]:
         destroy = False
-    if not terraform_dir_path:
-        terraform_dir_path = '.'
     terraform_command_args = []
     if state_file_path:
         # specify state file
@@ -204,7 +203,7 @@ def plan(
         '-input=false',
         '-detailed-exitcode',
         *terraform_command_args,
-        terraform_dir_path,
+        terraform_dir=terraform_dir_path,
         working_dir=working_dir_path,
         plugin_cache_dir=plugin_cache_dir_path,
         error_on_no_changes=error_on_no_changes,
@@ -223,8 +222,6 @@ def apply(
         plan_file_path: Optional[str] = None,
         var_file_paths: Optional[list] = None,
         debug: bool = False) -> None:
-    if not terraform_dir_path:
-        terraform_dir_path = '.'
     terraform_command_args = []
     if plan_file_path:
         # target plan file if using a plan file
@@ -243,7 +240,7 @@ def apply(
         'apply',
         '-input=false',
         *terraform_command_args,
-        terraform_dir_path,
+        terraform_dir=terraform_dir_path,
         working_dir=working_dir_path,
         plugin_cache_dir=plugin_cache_dir_path,
         debug=debug)
