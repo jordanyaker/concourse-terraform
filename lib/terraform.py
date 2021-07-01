@@ -60,7 +60,7 @@ def _terraform(
         TERRAFORM_BIN_FILE_PATH,
         *args
     ]
-    if terraform_dir is not None:
+    if terraform_dir:
         process_args.append(f'-chdir={terraform_dir}')
     # force 'TF_IN_AUTOMATION'
     os.environ['TF_IN_AUTOMATION'] = '1'
