@@ -228,9 +228,7 @@ def apply(
     if plan_file_path:
         # target plan file if using a plan file
         terraform_dir_path = plan_file_path
-    else:
-        # auto approve if not using a plan file
-        terraform_command_args.append('-auto-approve')
+    terraform_command_args.append('-auto-approve')
     if state_file_path:
         # specify state file
         terraform_command_args.append(f"-state={state_file_path}")
