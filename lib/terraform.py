@@ -56,12 +56,14 @@ def _terraform(
         error_on_no_changes: bool = True,
         output_file: str = None,
         debug: bool = False) -> None:
+    global_args = []
+    if terraform_dir:
+        global_args.append(f'-chdir={terraform_dir}')
     process_args = [
         TERRAFORM_BIN_FILE_PATH,
+        *global_args,
         *args
     ]
-    if terraform_dir:
-        process_args.append(f'-chdir={terraform_dir}')
     # force 'TF_IN_AUTOMATION'
     os.environ['TF_IN_AUTOMATION'] = '1'
     if debug:

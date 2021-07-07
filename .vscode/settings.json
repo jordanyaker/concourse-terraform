@@ -1,8 +1,11 @@
 {
     "python.linting.flake8Enabled": true,
-    "python.linting.pep8Enabled": true,
+    "python.linting.pycodestyleEnabled": true,
     "python.linting.pylintEnabled": false,
-    "python.linting.pep8Args": [
+    "python.linting.pycodestyleArgs": [
         "--ignore=E701"
-    ]
+    ],
+    "files.watcherExclude": {
+        "**/target": true
+    }
 }
